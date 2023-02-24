@@ -50,6 +50,23 @@ app.post('/Products', async(req, res) =>{
     //res.send(req.body)
 })
 
+//Update
+app.put('/products/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+      //no products
+        if(!product){
+            return res.status(404).json({message: 'cannot find any products with id ${id}'})
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(product);
+        
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
 mongoose.set("strictQuery", false)
 mongoose.connect('mongodb+srv://admin:admin@project1api.snidftc.mongodb.net/NODE-API?retryWrites=true&w=majority')
 .then (() =>{
