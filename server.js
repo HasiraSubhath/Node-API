@@ -15,10 +15,21 @@ app.get('/blog',(req, res) => {
     res.send('hi this is 2nd page')
 })
 
-//Get data
+//Get all data
 app.get('/products', async(req, res) =>{
     try {
         const products = await Product.find({});
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+//Get data by id
+app.get('/products/:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const products = await Product.findById(id);
         res.status(200).json(products)
     } catch (error) {
         res.status(500).json({message: error.message})
